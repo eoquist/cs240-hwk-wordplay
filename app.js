@@ -1,14 +1,11 @@
 /**
  * use javascript functions, arrays, and objects
 
-remember to branch often
+root word must be 6 chars long
 
-figure out how to scramble
-- best way to cycle through permutations
-- some array or table/hash of all possible permutations
-- overwrite with permutations that only exist in given dictionary page
+best way to cycle through permutations? - save them in an array?
+has to exist in given dictionary page
 
-Given root word, you are then to compute all the valid English words using a subset of its letters. 
 A root word’s letter cannot be used more than once, unless it appears more than once in the root word.
 
 Scramble the root word and output it to the console so the player knows what letters they have to work with. 
@@ -51,3 +48,24 @@ When the timer hits 0, the game ends.
 Add rules page to index?
 have fun with css??
 */
+
+var 
+trimmedDict = []; // 6 chars or under
+chosenWord = '', // 6 char
+permutations = [],
+guessedUnguessed = [];
+
+
+function scramble(someString){
+    let rtn = someString;
+    // iterate through all permutations
+}
+
+function findAllPermutations(someString){
+    let tmp = someString;
+    let sgmt = '';
+
+    // sgmt grabs 3 chars from given string --> permutations
+    // make use of splice/slice
+    // only keep valid words
+}
