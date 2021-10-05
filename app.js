@@ -1,8 +1,4 @@
 /**
- * use javascript functions, arrays, and objects
-
-root word must be 6 chars long
-
 best way to cycle through permutations? - save them in an array?
 has to exist in given dictionary page
 
@@ -13,19 +9,6 @@ Then display to the console the current list of guessed/unguessed words to the u
 Repeat until all words have been guessed, or if the user presses cancel. For the words that have not been 
 guessed, hide them using a dashes (one dash per letter separaated by space, like for Hangman). 
 Print this output to the console.
-
-To prompt the user for an input, use:
-let input = prompt(someString);
-
-To print and display a dialog window, use:
-alert(someOtherString);
-
-To print something to the console window, use:
-console.log(someOtherString);
-
-You should clear the console after each guess.
-console.clear();
-
 
 Your program outputs an appropriate message on a given input. 
 These messages are appropriate on a given input word:
