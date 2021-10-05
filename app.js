@@ -38,6 +38,9 @@ chosenWord = '', // 6 char
 permutations = [],
 guessedUnguessed = [];
 
+function trimDict(){
+    dictionary;
+}
 
 function scramble(someString){
     let rtn = someString;
@@ -48,7 +51,70 @@ function findAllPermutations(someString){
     let tmp = someString;
     let sgmt = '';
 
+    /** STEINHAUS-JOHNSON-TROTTER ALGORITHM in JavaScript  
+     * taken from Josh Braunchaud on codepen.io/jbranchaud/pen/gbRGBp 
+     * barely modified */ 
+    function stj(n){
+        var previousPermutations,
+        permutations = [],
+        odd = true,
+        i;
+    
+        if ( n === 1 ) {
+        return [[1]];
+        }
+    
+        previousPermutations = sjt(n-1);
+        for ( i = 0; i < previousPermutations.length; i++ ) {
+        var currentPermutation = copyArray(previousPermutations[i]);
+        if ( odd ) {
+            currentPermutation.push(n);
+            permutations.push(currentPermutation);
+            for ( var j = currentPermutation.length - 1; j > 0; j-- ) {
+            currentPermutation = copyArray(currentPermutation);
+            swap(currentPermutation, j, j-1);
+            permutations.push(currentPermutation);
+            }
+        }
+        else {
+            currentPermutation = [n].concat(currentPermutation);
+            permutations.push(currentPermutation);
+            for ( var j = 0; j < currentPermutation.length - 1; j++ ) {
+            currentPermutation = copyArray(currentPermutation);
+            swap(currentPermutation, j, j+1);
+            permutations.push(currentPermutation);
+            }
+        }
+      odd = !odd;
+    }
+    return permutations;
+  }
+  
+  function copyArray(array) {
+    var copy = [];
+    
+    if ( array ) {
+      copy = array.map(function(item) { return item; });
+    }
+    
+    return copy;
+  }
+  
+  // swap what is stored at position i and j in the array
+  function swap(array, i, j) {
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  
+  console.log(sjt(1));
+  console.log(sjt(3));
+  console.log(sjt(5));
+    }
+    
+    //for ( i=0 ; i < Math.factorial(tmp.length) ; i++ )
+
+
     // sgmt grabs 3 chars from given string --> permutations
     // make use of splice/slice
     // only keep valid words
-}
