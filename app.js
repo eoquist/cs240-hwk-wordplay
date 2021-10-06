@@ -45,10 +45,8 @@ for(let i=0; i < 3; i++){
     alert("A word has been chosen for you");
     chosenWord = rootWordOptions[(Math.random()*rootWordOptionsSize)]; // pull a random base word
   }
-  else{
-    break;
-  }
 }
+console.log(chosenWord); // test print
 
 function scramble(someString){
   const wordToScramble = someString;
@@ -97,8 +95,8 @@ const getPermutations = arr => {
     return permutations;
 }
 
-let chosenWordArr = Array.from(chosenWord); // makes sure it will be treated as an array
-permutations = getPermutations(chosenWordArr);
+let chosenWordArr = chosenWord.split() // makes sure it will be treated as an array
+permutations = getPermutations(chosenWordArr); 
 // check validity against large dictionary
 // should be ordered in length and then alphabetically
 
