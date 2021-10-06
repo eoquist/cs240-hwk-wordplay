@@ -31,7 +31,7 @@ for(let i=0; i < 3; i++){
     alert("Your word is not 6 letters long");
     prompt("Please enter a 6-letter word.");
   }
-  else if(!rootWordOptions.includes(chosenWord)){
+  else if(!(rootWordOptions.includes(chosenWord))){
     alert("Please choose another word");
     prompt("Please enter a 6-letter word.");
   }
@@ -73,7 +73,7 @@ const getPermutations = arr => {
 
   const generate = (n, heapArr) => {
     if (n==1){
-      output.push(heapArr.slice());
+      permutations.push(heapArr.slice());
       return;
     }
 
@@ -91,7 +91,7 @@ const getPermutations = arr => {
   }
 
   generate(chosenWordArr.length, chosenWordArr.slice());
-    return output;
+    return permutations;
 }
 
 permutations = getPermutations(chosenWordArr);
