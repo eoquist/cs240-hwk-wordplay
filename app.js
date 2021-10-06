@@ -21,15 +21,30 @@ var
 wordLength = 6,
 rootWordOptions = [],
 trimmedDict = [], // contains words only of user defined length (possible root words)
-chosenWord = null, 
+chosenWord = prompt("Please enter a 6-letter word."), 
 permutations = [],
 guessedUnguessed = [];
 
 let rootWordOptionsSize = rootWordOptions.length;
-while(null = chosenWord || chosenWord.length != 6){
-  chosenWord = rootWordOptions[(Math.random()*rootWordOptionsSize)]; // pull a random base word
+for(let i=0; i < 3; i++){
+  if(chosenWord.length != 6){
+    alert("Your word is not 6 letters long");
+    prompt("Please enter a 6-letter word.");
+  }
+  else if(!rootWordOptions.includes(chosenWord)){
+    alert("Please choose another word");
+    prompt("Please enter a 6-letter word.");
+  }
+  else if(i = 2){
+    alert("A word has been chosen for you");
+    chosenWord = rootWordOptions[(Math.random()*rootWordOptionsSize)]; // pull a random base word
+  }
+  else{
+    break;
+  }
 }
-prompt("Please enter a 6-letter word.");
+
+
 
 function scramble(someString){
   const wordToScramble = someString;
