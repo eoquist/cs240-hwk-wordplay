@@ -43,7 +43,7 @@ for(let i=0; i < 3; i++){
     break;
   }
 }
-
+let chosenWordArr = Array.from(chosenWord); // makes sure it will be treated as an array
 
 
 function scramble(someString){
@@ -56,15 +56,11 @@ function scramble(someString){
   }
 }
 
-// select a random word from trimmed dictionary -> set to chosen word
-
-let chosenWordArr = Array.from(chosenWord);
-
 /**
  * Heap's Algorithm in JavaScript
  * followed youTube video by Justin Kim
  * fills an array with all permutations
- * @param {*} arr 
+ * @param {*} arr array of single items to use in finding all permutations of those items
  */
 const getPermutations = arr => {
   const permutations = []; // figure out what is going in here
@@ -96,20 +92,16 @@ const getPermutations = arr => {
 
   generate(chosenWordArr.length, chosenWordArr.slice());
     return output;
-
 }
 
-/**
- * console.clear();
- * console.log(scramble(chosenWord));
- * 
- * get all permutations of the chosen word
- * getPermutations(chosenWordArr);
- * check validity against large dictionary
- * 
- * save in permutations[]
- * ^^ should be ordered in length and then alphabetically
- * 
+permutations = getPermutations(chosenWordArr);
+// check validity against large dictionary
+// should be ordered in length and then alphabetically
+
+console.clear();
+console.log(scramble(chosenWord));
+
+/** 
  * instantiate and put out to console log a hyphen-filled --- version of the permutations list
  * put in guessedUnguessed[]
  * 
@@ -131,5 +123,3 @@ const getPermutations = arr => {
  * if permutations is the same as guessedUnguessed
  * gameWon = True;
 */
-
-permutations = getPermutations(chosenWordArr);
