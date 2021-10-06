@@ -27,6 +27,8 @@ function trim(arr){
   }
 }
 trim(dictionary);
+// test print rootwordoptions
+// test print trimmedDict.
 
 
 let rootWordOptionsSize = rootWordOptions.length;
@@ -47,8 +49,6 @@ for(let i=0; i < 3; i++){
     break;
   }
 }
-let chosenWordArr = Array.from(chosenWord); // makes sure it will be treated as an array
-
 
 function scramble(someString){
   const wordToScramble = someString;
@@ -56,7 +56,6 @@ function scramble(someString){
   for(let i = 0; i < wordLength; i++){
     const ran = (Math.random()*(someString.length-1));
     const tmp = '';
-
   }
 }
 
@@ -94,10 +93,11 @@ const getPermutations = arr => {
     }
   }
 
-  generate(chosenWordArr.length, chosenWordArr.slice());
+  generate(chosenWord.length, chosenWord.slice());
     return permutations;
 }
 
+let chosenWordArr = Array.from(chosenWord); // makes sure it will be treated as an array
 permutations = getPermutations(chosenWordArr);
 // check validity against large dictionary
 // should be ordered in length and then alphabetically
