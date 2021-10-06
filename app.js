@@ -27,13 +27,20 @@ function trim(arr){
   }
 }
 trim(dictionary);
-// test print rootwordoptions
-// test print trimmedDict.
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ */
+// test print rootwordoptions?
+// test print trimmedDict?
 
 
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ * doesnt work as i hoped - sometimes automatically just gives the player a word
+ */
 let rootWordOptionsSize = rootWordOptions.length;
 for(let i=0; i < 3; i++){
-  if(chosenWord.length != 6){
+  if(chosenWord.length != wordLength){
     alert("Your word is not 6 letters long");
     prompt("Please enter a 6-letter word.");
   }
@@ -44,9 +51,10 @@ for(let i=0; i < 3; i++){
   else if(i = 2){
     alert("A word has been chosen for you");
     chosenWord = rootWordOptions[(Math.random()*rootWordOptionsSize)]; // pull a random base word
+    console.log(chosenWord);
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   }
 }
-console.log(chosenWord); // test print
 
 function scramble(someString){
   const wordToScramble = someString;
@@ -56,6 +64,11 @@ function scramble(someString){
     const tmp = '';
   }
 }
+
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ * array equivalency function
+ */
 
 /**
  * Heap's Algorithm in JavaScript
@@ -95,33 +108,48 @@ const getPermutations = arr => {
     return permutations;
 }
 
-let chosenWordArr = chosenWord.split() // makes sure it will be treated as an array
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ */
+let chosenWordArr = Array.from(chosenWord); // makes sure it will be treated as an array
 permutations = getPermutations(chosenWordArr); 
 // check validity against large dictionary
 // should be ordered in length and then alphabetically
 
-console.clear();
 console.log(scramble(chosenWord));
 
-/** 
- * instantiate and put out to console log a hyphen-filled --- version of the permutations list
- * put in guessedUnguessed[]
- * 
- * iterate through guessedUnguessed and print one by one
- * console.log();
- * 
- * const gameWon = False;
- * PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
- * asterisk (*) scrambles chosen word
- * 
- * Alert to the user: word is not a valid English word (or too short/long)
- * Alert to the user: word has already been found
- * Alert to the user: Correct!
- * 
- * 
- * after each successful guess, update the guessedUnguessed array
- * print to console
- * 
- * if permutations is the same as guessedUnguessed
- * gameWon = True;
-*/
+//  blank --- version of permutations list --> put in guessedUnguessed[]
+for(let i=0; i<permutations.length; i++){
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ */
+}
+
+guessedUnguessed.forEach( function(x) {console.log(x)} );
+
+// PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
+do{
+  var guess = prompt("What is one word you can make from the scrambled letters?");
+  // asterisk (*) scrambles chosen word
+
+  /**
+  * Alert to the user: word is not a valid English word (or too short/long)
+  * Alert to the user: word has already been found
+  * Alert to the user: Correct!
+  * 
+  * after each successful guess, update the guessedUnguessed array
+  * clear console
+  * print to console
+  */
+
+} while (guess != null && permutations = guessedUnguessed);
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ * array equivalency function
+ */
+
+
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ * end game stats printed here
+ */
