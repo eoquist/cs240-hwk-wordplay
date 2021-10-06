@@ -6,14 +6,6 @@ Add rules page to index?
 have fun with css??
 */
 
-var 
-wordLength = 6,
-rootWordOptions = [],
-trimmedDict = [], // contains words only of user defined length (possible root words)
-chosenWord = null, 
-permutations = [],
-guessedUnguessed = [];
-
 // trim dictionary
 for(let i=dictionary.length-1; i>=0; i--){
   if(dictionary[i].length == 6){
@@ -25,6 +17,19 @@ for(let i=dictionary.length-1; i>=0; i--){
   }
 }
 
+var 
+wordLength = 6,
+rootWordOptions = [],
+trimmedDict = [], // contains words only of user defined length (possible root words)
+chosenWord = null, 
+permutations = [],
+guessedUnguessed = [];
+
+let rootWordOptionsSize = rootWordOptions.length;
+while(null = chosenWord || chosenWord.length != 6){
+  chosenWord = rootWordOptions[(Math.random()*rootWordOptionsSize)]; // pull a random base word
+}
+prompt("Please enter a 6-letter word.");
 
 function scramble(someString){
   const wordToScramble = someString;
