@@ -7,34 +7,47 @@ have fun with css??
 */
 
 var 
-wordLength = 6, // 6 chars- or user defined
+wordLength = 6,
+rootWordOptions = [],
 trimmedDict = [], // contains words only of user defined length (possible root words)
-chosenWord = '', 
-scrambledWord = '';
+chosenWord = null, 
 permutations = [],
 guessedUnguessed = [];
 
-function trimDict(){ // determine based off wordLength
-    dictionary;
+// trim dictionary
+for(let i=dictionary.length-1; i>=0; i--){
+  if(dictionary[i].length == 6){
+    rootWordOptions.push(dictionary[i]);
+    trimmedDict.push(dictionary[i]);
+  }
+  else if (dictionary[i].length < 6){
+    trimmedDict.push(dictionary[i]);
+  }
 }
 
 
-function scramble(){
-  // function scrambles the chosen word
+function scramble(someString){
+  const wordToScramble = someString;
+
+  for(let i = 0; i < wordLength; i++){
+    const ran = (Math.random()*(someString.length-1));
+    const tmp = '';
+
+  }
 }
 
 // select a random word from trimmed dictionary -> set to chosen word
 
 let chosenWordArr = Array.from(chosenWord);
-scrambledWord = scramble();
 
 /**
  * Heap's Algorithm in JavaScript
- * followed video by Justin Kim
+ * followed youTube video by Justin Kim
+ * fills an array with all permutations
  * @param {*} arr 
  */
 const getPermutations = arr => {
-  const permutations = [];
+  const permutations = []; // figure out what is going in here
 
   const swap = (arrToSwap, indexA, indexB) => {
     const tmp = arrToSwap[indexA];
@@ -67,7 +80,8 @@ const getPermutations = arr => {
 }
 
 /**
- * console.log("scrambledWord");
+ * console.clear();
+ * console.log(scramble(chosenWord));
  * 
  * get all permutations of the chosen word
  * getPermutations(chosenWordArr);
@@ -86,9 +100,6 @@ const getPermutations = arr => {
  * PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
  * asterisk (*) scrambles chosen word
  * 
- * console.clear();
- * console.log("Your letters:" + print scrambledWord)
- * 
  * Alert to the user: word is not a valid English word (or too short/long)
  * Alert to the user: word has already been found
  * Alert to the user: Correct!
@@ -100,3 +111,5 @@ const getPermutations = arr => {
  * if permutations is the same as guessedUnguessed
  * gameWon = True;
 */
+
+permutations = getPermutations(chosenWordArr);
