@@ -1,30 +1,4 @@
 /**
-best way to cycle through permutations? - save them in an array?
-has to exist in given dictionary page
-
-A root word’s letter cannot be used more than once, unless it appears more than once in the root word.
-
-Scramble the root word and output it to the console so the player knows what letters they have to work with. 
-Then display to the console the current list of guessed/unguessed words to the user, and get their inputs. 
-Repeat until all words have been guessed, or if the user presses cancel. For the words that have not been 
-guessed, hide them using a dashes (one dash per letter separaated by space, like for Hangman). 
-Print this output to the console.
-
-Your program outputs an appropriate message on a given input. 
-These messages are appropriate on a given input word:
-
-Alert to the user: word is not a valid English word (or too short/long)
-Alert to the user: word has already been found
-Alert to the user: Correct!
-
-The exception is if a * was entered. When this is the case, scramble the available letters 
-and display the status of the game again. Alert the user that you have done this.
-The game ends on two conditions: if the user guesses all words, or if the user inputs null 
-for a guess, which can be accomplished by pressing Cancel on the prompt.
-
-Congratulate the user if they mananged to get all the words!
-Otherwise, display the solution (all the valid words), as well as the number of words the player got right!
-
 Optional Extension
 If you have time, add a 3-minute countdown timer which starts as soon as the page is loaded. 
 When the timer hits 0, the game ends.
@@ -33,88 +7,96 @@ have fun with css??
 */
 
 var 
-trimmedDict = []; // 6 chars or under
-chosenWord = '', // 6 char
+wordLength = 6, // 6 chars- or user defined
+trimmedDict = [], // contains words only of user defined length (possible root words)
+chosenWord = '', 
+scrambledWord = '';
 permutations = [],
 guessedUnguessed = [];
 
-function trimDict(){
+function trimDict(){ // determine based off wordLength
     dictionary;
 }
 
-function scramble(someString){
-    let rtn = someString;
-    // iterate through all permutations
+
+function scramble(){
+  // function scrambles the chosen word
 }
 
-function findAllPermutations(someString){
-    let tmp = someString;
-    let sgmt = '';
+// select a random word from trimmed dictionary -> set to chosen word
 
-    /** STEINHAUS-JOHNSON-TROTTER ALGORITHM in JavaScript  
-     * taken from Josh Braunchaud on codepen.io/jbranchaud/pen/gbRGBp 
-     * barely modified */ 
-    function stj(n){
-        var previousPermutations,
-        permutations = [],
-        odd = true,
-        i;
-    
-        if ( n === 1 ) {
-        return [[1]];
-        }
-    
-        previousPermutations = sjt(n-1);
-        for ( i = 0; i < previousPermutations.length; i++ ) {
-        var currentPermutation = copyArray(previousPermutations[i]);
-        if ( odd ) {
-            currentPermutation.push(n);
-            permutations.push(currentPermutation);
-            for ( var j = currentPermutation.length - 1; j > 0; j-- ) {
-            currentPermutation = copyArray(currentPermutation);
-            swap(currentPermutation, j, j-1);
-            permutations.push(currentPermutation);
-            }
-        }
-        else {
-            currentPermutation = [n].concat(currentPermutation);
-            permutations.push(currentPermutation);
-            for ( var j = 0; j < currentPermutation.length - 1; j++ ) {
-            currentPermutation = copyArray(currentPermutation);
-            swap(currentPermutation, j, j+1);
-            permutations.push(currentPermutation);
-            }
-        }
-      odd = !odd;
-    }
-    return permutations;
-  }
-  
-  function copyArray(array) {
-    var copy = [];
-    
-    if ( array ) {
-      copy = array.map(function(item) { return item; });
-    }
-    
-    return copy;
-  }
-  
-  // swap what is stored at position i and j in the array
-  function swap(array, i, j) {
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  
-  console.log(sjt(1));
-  console.log(sjt(3));
-  console.log(sjt(5));
-    }
-    
-    //for ( i=0 ; i < Math.factorial(tmp.length) ; i++ )
+let chosenWordArr = Array.from(chosenWord);
+scrambledWord = scramble();
 
+/**
+ * Heap's Algorithm in JavaScript
+ * followed video by Justin Kim
+ * @param {*} arr 
+ */
+const getPermutations = arr => {
+  const permutations = [];
 
-    // sgmt grabs 3 chars from given string --> permutations
-    // make use of splice/slice
-    // only keep valid words
+  const swap = (arrToSwap, indexA, indexB) => {
+    const tmp = arrToSwap[indexA];
+    arrToSwap[indexA] = arrToSwap[indexB];
+    arrToSwap[indexB] = tmp;
+  }
+
+  const generate = (n, heapArr) => {
+    if (n==1){
+      output.push(heapArr.slice());
+      return;
+    }
+
+    generate (n - 1, heapArr);
+
+    for (let i = 0; i < n - 1; i++){
+      if (n % 2 == 0) {
+        swap(heapArr, i, n-1);
+      } else {
+        swap(heapArr, 0, n-1);
+      }
+
+      generate (n - 1, heapArr);
+    }
+  }
+
+  generate(chosenWordArr.length, chosenWordArr.slice());
+    return output;
+
+}
+
+/**
+ * console.log("scrambledWord");
+ * 
+ * get all permutations of the chosen word
+ * getPermutations(chosenWordArr);
+ * check validity against large dictionary
+ * 
+ * save in permutations[]
+ * ^^ should be ordered in length and then alphabetically
+ * 
+ * instantiate and put out to console log a hyphen-filled --- version of the permutations list
+ * put in guessedUnguessed[]
+ * 
+ * iterate through guessedUnguessed and print one by one
+ * console.log();
+ * 
+ * const gameWon = False;
+ * PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
+ * asterisk (*) scrambles chosen word
+ * 
+ * console.clear();
+ * console.log("Your letters:" + print scrambledWord)
+ * 
+ * Alert to the user: word is not a valid English word (or too short/long)
+ * Alert to the user: word has already been found
+ * Alert to the user: Correct!
+ * 
+ * 
+ * after each successful guess, update the guessedUnguessed array
+ * print to console
+ * 
+ * if permutations is the same as guessedUnguessed
+ * gameWon = True;
+*/
