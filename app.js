@@ -6,6 +6,14 @@ Add rules page to index?
 have fun with css??
 */
 
+var 
+wordLength = 6,
+rootWordOptions = [],
+trimmedDict = [], // contains words only of user defined length (possible root words)
+chosenWord = prompt("Please enter a 6-letter word."), 
+permutations = [],
+guessedUnguessed = [];
+
 // trim dictionary
 for(let i=dictionary.length-1; i>=0; i--){
   if(dictionary[i].length == 6){
@@ -16,14 +24,6 @@ for(let i=dictionary.length-1; i>=0; i--){
     trimmedDict.push(dictionary[i]);
   }
 }
-
-var 
-wordLength = 6,
-rootWordOptions = [],
-trimmedDict = [], // contains words only of user defined length (possible root words)
-chosenWord = prompt("Please enter a 6-letter word."), 
-permutations = [],
-guessedUnguessed = [];
 
 let rootWordOptionsSize = rootWordOptions.length;
 for(let i=0; i < 3; i++){
