@@ -15,6 +15,10 @@ permutations = [],
 guessedUnguessed = [];
 
 // trim dictionary
+/**
+ * HashMap K(word) V(# letter?)
+ * @param {*} arr 
+ */
 function trim(arr){
   for(let i= arr.length-1; i>=0; i--){
     if(arr[i].length == 6){
@@ -42,11 +46,11 @@ let rootWordOptionsSize = rootWordOptions.length;
 for(let i=0; i < 3; i++){
   if(chosenWord.length != wordLength){
     alert("Your word is not 6 letters long");
-    prompt("Please enter a 6-letter word.");
+    chosenWord = prompt("Please enter a 6-letter word.");
   }
   else if(!(rootWordOptions.includes(chosenWord))){
     alert("Please choose another word");
-    prompt("Please enter a 6-letter word.");
+    chosenWord = prompt("Please enter a 6-letter word.");
   }
   else if(i = 2){
     alert("A word has been chosen for you");
@@ -63,6 +67,9 @@ function scramble(someString){
     const ran = (Math.random()*(someString.length-1));
     const tmp = '';
   }
+  /**
+   * finish scramble
+   */
 }
 
 /**
@@ -154,10 +161,11 @@ do{
      * print to console
      */
   }
-} while (guess != null && permutations = guessedUnguessed);
+} while (guess != null); //  && permutations = guessedUnguessed
 /**
  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
  * array equivalency function
+ * counter
  */
 
 
