@@ -9,7 +9,6 @@ have fun with css??
 var 
 wordLength = 6,
 rootWordOptions = [],
-trimmedDict = [], // contains words only of user defined length (possible root words)
 dictMap = {},
 chosenWord, 
 permutations = [],
@@ -21,7 +20,7 @@ guessedUnguessed = [];
  */
 trim(test);
 console.log(rootWordOptions);
-console.log(trimmedDict);
+console.log(dictMap);
 
 
 let rootWordOptionsSize = rootWordOptions.length;
@@ -41,10 +40,10 @@ function trim(arr){
   for(let i= arr.length-1; i>=0; i--){
     if(arr[i].length == 6){
       rootWordOptions.push(arr[i]);
-      trimmedDict.push(arr[i]);
+      dictMap[arr[i]] = arr[i].length;
     }
     else if (arr[i].length < 6){
-      trimmedDict.push(arr[i]);
+      dictMap[arr[i]] = arr[i].length;
     }
   }
 }
@@ -136,7 +135,7 @@ console.log(permutations);
 //   else if((guess != null) && (guess = '*')){ // asterisk (*) scrambles chosen word
 //     chosenWord = scramble(chosenWord);
 //   }
-//   else if((guess != null) && !(trimmedDict.includes(guess))){
+//   else if((guess != null) && !(guess in dictMap)){
 //     alert(""); // too short/long
 //   }
 //   else if((guess != null) && (guess = x )){
