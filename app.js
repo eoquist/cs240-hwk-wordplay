@@ -18,14 +18,14 @@ wordsTotal = 1
 guessUnguessed = [];
 
 var dictMap = {
-  word = '',
-  count = 0
+  word: '',
+  count: 0
 }
 
 var guessedUnguessedOBJ = {
-  word = '',
-  unguessed = '',
-  state = ''
+  word: '',
+  unguessed: '',
+  state: ''
 }
 
 /**
@@ -153,7 +153,6 @@ function endGame(){
  }
 
 do{
-  console.log("While loop start");
   var guess = prompt("What is one word you can make from the scrambled letters?");
 
   if((guess != null) && (guess == '*')){ // asterisk (*) scrambles chosen word
@@ -168,20 +167,26 @@ do{
   else if(guess != null && (trimmedDict.filter(obj => obj.word === guess).length > 0)){
     alert('Congratulations! You guessed "' + guess + '" correctly!');
     wordsGuessed++;
-    // after each successful guess, update the guessedUnguessed array
+    guessUnguessed.forEach( function(o) {  // after each successful guess, update the guessedUnguessed array
+      if(o.word === guess){
+        e.state = e.word 
+      }
+    });
+
     console.clear();
     console.log(tmpScramble);
-    // iterate through guessedUnguessed and print line by line
+    guessUnguessed.forEach( function(o) {  // print each
+      console.log(e.state)
+    });
     printPermutations();
   }
-  else if((guess != null) && !(guess in dictMap)){
+  else if((guess != null) && !(trimmedDict.filter(obj => obj.word === guess).length > 0)){
     alert(guess + " is not in the dictionary provided");
   }
   else if(guess === null){
     endGame();
     break;
   }
-  console.log("test to ensure while loop works");
 } while (wordsGuessed < wordsTotal); 
  /**
   * END MAIN CODE
