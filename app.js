@@ -14,8 +14,13 @@ rootWordOptions = [],
 chosenWord, 
 permutations = [],
 wordsGuessed = 0,
-wordsTotal = 0,
-guessedUnguessed = {};
+wordsTotal = 1;
+
+var guessedUnguessed = {
+  word = '',
+  unguessed = '',
+  state = ''
+}
 
 /**
  * @param {*} arr given an array of strings (dictionary)
@@ -23,7 +28,7 @@ guessedUnguessed = {};
  * @param {*} otherArr object map of strings of length between 3 and 6 (inclusive) with values indicating length
  */
 function trim(arr, arrOf6, otherArr){
-  for(let i= arr.length-1; i>=0; i--){
+  for(let i=0; i<arr.length-1; i++){
     if(arr[i].length == 6){
       arrOf6.push(arr[i]);
       otherArr[arr[i]] = arr[i].length;
@@ -58,23 +63,17 @@ function swap(someString, num1, num2){
   return word;
 }
 
-// /**
-//  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//  * array equivalency function??
-//  * FIX GETPERMUTATIONS
-//  */
-
 /**
  * Taken from stackoverflow users Syntac, Eugen Sunic, and others.
  * https://stackoverflow.com/questions/39927452/recursively-print-all-permutations-of-a-string-javascript
  * @param {*} string takes a string to permute
  */
 function getPermutations(string){ 
-  for (var i = MIN_WORDLENGTH; i < string.length; i++) {
+  // IN DESPERATE NEED OF FIXING
+  for (var i = MIN_WORDLENGTH; i <= string.length; i++) {
     var char = string[i];
 
-    // Cause we don't want any duplicates:
-    if (string.indexOf(char) != i){
+    if (string.indexOf(char) != i){ // Cause we don't want any duplicates:
       continue;
     }
     var remainingString = string.slice(0, i) + string.slice(i + 1, string.length);
@@ -84,25 +83,29 @@ function getPermutations(string){
       if(word in dictMap){
         console.log(word);
         permutations.push(char + subPermutation);
+        //check validity against large dictionary
+        //should be ordered in length and then alphabetically
       }
     }
   }
+  // wordsTotal = permutations.length;
   return permutations;
   } 
-
-
-// // check validity against large dictionary
-// // should be ordered in length and then alphabetically
 
 function printPermutations(){
   permutations.forEach((e) => {console.log(e)} );
 }
 
-// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 function endGame(){
   console.log("Thank you for playing!");
-  console.log(chosenWord);
-  printPermutations();
+  console.log("You correctly guessed " + wordsGuessed + " of " + wordsTotal + " words.");
+  if(wordsGuessed == wordsTotal){
+    console.log("Congratulations on guessing all possible word combinations!");
+  }
+  else{
+    console.log("These were all the possible words:");
+    printPermutations();
+  }
 }
 
 
@@ -119,11 +122,11 @@ function endGame(){
  alert("A 6-letter word has been chosen for you");
  chosenWord = rootWordOptions[num]; // pull a random base word
  console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-  var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
-  permutations = getPermutations(chosenWord); 
-var tmpScramble = scramble(chosenWord)
-console.log("Your letters are: " + tmpScramble);
+ 
+ var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
+ permutations = getPermutations(chosenWord); 
+ var tmpScramble = scramble(chosenWord)
+ console.log("Your letters are: " + tmpScramble);
 
 // //  blank --- version of permutations list --> put in guessedUnguessed[]
 // for(let i=0; i<permutations.length; i++){
@@ -132,13 +135,12 @@ console.log("Your letters are: " + tmpScramble);
 //  */
 // }
 
-// // PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
 do{
+  console.log("While loop start");
   var guess = prompt("What is one word you can make from the scrambled letters?");
 
-  if((guess != null) && (guess = '*')){ // asterisk (*) scrambles chosen word
-    chosenWord = scramble(chosenWord);
-    endGame();
+  if((guess != null) && (guess == '*')){ // asterisk (*) scrambles chosen word
+    console.log(scramble(chosenWord));
   }
   else if((guess != null) && (guess.length < 3 || guess.length > 6)){
     alert(guess + " is either too short or too long!");
@@ -148,30 +150,22 @@ do{
   }
   else if(guess != null && (guess in dictMap)){
     alert('Congratulations! You guessed "' + guess + '" correctly!');
+    wordsGuessed++;
     // after each successful guess, update the guessedUnguessed array
     console.clear();
     console.log(tmpScramble);
+    // iterate through guessedUnguessed and print line by line
     printPermutations();
   }
   else if((guess != null) && !(guess in dictMap)){
     alert(guess + " is not in the dictionary provided");
   }
-  else {
+  else if(guess === null){
     endGame();
     break;
   }
-} while (guess != null); //  && permutations = guessedUnguessed
-
-// /**
-//  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//  * array equivalency function
-//  * counter
-//  */
-
-
-//end game stats displayed here:
-console.log("You correctly guessed " + wordsGuessed + " of " + wordsTotal + " words.");
-// iterate through guessedUnguessed and print line by line
+  console.log("test to ensure while loop works");
+} while (wordsGuessed < wordsTotal); 
  /**
   * END MAIN CODE
   */
