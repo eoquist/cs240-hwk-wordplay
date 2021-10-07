@@ -9,14 +9,20 @@ have fun with css??
 var 
 MIN_WORDLENGTH = 3,
 MAX_WORDLENGTH = 6,
-dictMap = {},
+trimmedDict = [],
 rootWordOptions = [],
 chosenWord, 
 permutations = [],
 wordsGuessed = 0,
-wordsTotal = 1;
+wordsTotal = 1
+guessUnguessed = [];
 
-var guessedUnguessed = {
+var dictMap = {
+  word = '',
+  count = 0
+}
+
+var guessedUnguessedOBJ = {
   word = '',
   unguessed = '',
   state = ''
@@ -25,16 +31,22 @@ var guessedUnguessed = {
 /**
  * @param {*} arr given an array of strings (dictionary)
  * @param {*} arrOf6 array strings of length 6
- * @param {*} otherArr object map of strings of length between 3 and 6 (inclusive) with values indicating length
+ * @param {*} dict array of map of strings of length between 3 and 6 (inclusive) with values indicating length
  */
-function trim(arr, arrOf6, otherArr){
+function trim(arr, arrOf6, dict){
   for(let i=0; i<arr.length-1; i++){
+    var map = new dictMap();
     if(arr[i].length == 6){
       arrOf6.push(arr[i]);
-      otherArr[arr[i]] = arr[i].length;
+
+      map.word = arr[i];
+      map.count = arr[i].length;
+      trimmedDict.push(map);
     }
     else if (arr[i].length < 6 && arr[i].length >= 3 ){
-      otherArr[arr[i]] = arr[i].length;
+      map.word = arr[i];
+      map.count = arr[i].length;
+      trimmedDict.push(map);
     }
   }
 }
@@ -70,7 +82,7 @@ function swap(someString, num1, num2){
  */
 function getPermutations(string){ 
   // IN DESPERATE NEED OF FIXING
-  for (var i = MIN_WORDLENGTH; i <= string.length; i++) {
+  for (var i = 0; i <= string.length; i++) {
     var char = string[i];
 
     if (string.indexOf(char) != i){ // Cause we don't want any duplicates:
@@ -80,11 +92,12 @@ function getPermutations(string){
 
     for (var subPermutation of getPermutations(remainingString)){
       var word = char + subPermutation;
-      if(word in dictMap){
+      
+      // if word is in trimmedDict[]
+      if(trimmedDict.filter(obj => obj.word === word).length > 0){  // referenced arrow notation
         console.log(word);
         permutations.push(char + subPermutation);
-        //check validity against large dictionary
-        //should be ordered in length and then alphabetically
+        //should be ordered in length and then alphabetically????
       }
     }
   }
@@ -127,13 +140,17 @@ function endGame(){
  permutations = getPermutations(chosenWord); 
  var tmpScramble = scramble(chosenWord)
  console.log("Your letters are: " + tmpScramble);
+ 
+ //  blank '- - -' map of 
+ for(i=0;i<permutations.length-1;i++){
+   var obj = new guessedUnguessedOBJ();
+   var str = ("- ").repeat(permutations[i].length);
 
-// //  blank --- version of permutations list --> put in guessedUnguessed[]
-// for(let i=0; i<permutations.length; i++){
-// /**
-//  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//  */
-// }
+   obj.word = permutations[i];
+   obj.unguessed = str;
+   obj.state = str;
+   guessUnguessed.push(obj);
+ }
 
 do{
   console.log("While loop start");
@@ -145,10 +162,10 @@ do{
   else if((guess != null) && (guess.length < 3 || guess.length > 6)){
     alert(guess + " is either too short or too long!");
   }
-  else if((guess != null) && (guess in guessedUnguessed)){
+  else if((guess != null) && (guessUnguessed.filter(obj => obj.word === guess).length > 0)){
     alert(guess + " has already been found");
   }
-  else if(guess != null && (guess in dictMap)){
+  else if(guess != null && (trimmedDict.filter(obj => obj.word === guess).length > 0)){
     alert('Congratulations! You guessed "' + guess + '" correctly!');
     wordsGuessed++;
     // after each successful guess, update the guessedUnguessed array
