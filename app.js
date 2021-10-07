@@ -10,10 +10,15 @@ var
 wordLength = 6,
 rootWordOptions = [],
 trimmedDict = [], // contains words only of user defined length (possible root words)
+dictMap = {},
 chosenWord, 
 permutations = [],
 guessedUnguessed = [];
 
+
+/**
+ * BEGIN MAIN CODE
+ */
 trim(test);
 console.log(rootWordOptions);
 console.log(trimmedDict);
@@ -23,7 +28,9 @@ let rootWordOptionsSize = rootWordOptions.length;
 var num = Math.floor(Math.random()*rootWordOptionsSize);
 alert("A 6-letter word has been chosen for you");
 chosenWord = rootWordOptions[num]; // pull a random base word
-console.log(scramble(chosenWord));
+/**
+ * END MAIN CODE
+ */
 
 
 /**
@@ -63,49 +70,48 @@ function scramble(someString){ // messy code to scramble a word
 //  * array equivalency function??
 //  */
 
-// /**
-//  * Heap's Algorithm in JavaScript
-//  * followed youTube video by Justin Kim
-//  * fills an array with all permutations
-//  * @param {*} arr array of single items to use in finding all permutations of those items
-//  */
-// const getPermutations = arr => {
-//   const permutations = []; // figure out what is going in here
+/**
+ * Heap's Algorithm in JavaScript
+ * followed youTube video by Justin Kim
+ * fills an array with all permutations
+ * @param {*} arr array of single items to use in finding all permutations of those items
+ */
+const getPermutations = arr => {
 
-//   const swap = (arrToSwap, indexA, indexB) => {
-//     const tmp = arrToSwap[indexA];
-//     arrToSwap[indexA] = arrToSwap[indexB];
-//     arrToSwap[indexB] = tmp;
-//   }
+  const swap = (arrToSwap, indexA, indexB) => {
+    const tmp = arrToSwap[indexA];
+    arrToSwap[indexA] = arrToSwap[indexB];
+    arrToSwap[indexB] = tmp;
+  }
 
-//   const generate = (n, heapArr) => {
-//     if (n==1){
-//       permutations.push(heapArr.slice());
-//       return;
-//     }
+  const generate = (n, heapArr) => {
+    if (n==1){
+      permutations.push(heapArr.slice());
+      return;
+    }
 
-//     generate (n - 1, heapArr);
+    generate (n - 1, heapArr);
 
-//     for (let i = 0; i < n - 1; i++){
-//       if (n % 2 == 0) {
-//         swap(heapArr, i, n-1);
-//       } else {
-//         swap(heapArr, 0, n-1);
-//       }
+    for (let i = 0; i < n - 1; i++){
+      if (n % 2 == 0) {
+        swap(heapArr, i, n-1);
+      } else {
+        swap(heapArr, 0, n-1);
+      }
 
-//       generate (n - 1, heapArr);
-//     }
-//   }
+      generate (n - 1, heapArr);
+    }
+  }
 
-//   generate(chosenWord.length, chosenWord.slice());
-//     return permutations;
-// }
+  generate(chosenWord.length, chosenWord.slice());
+  return permutations;
+}
 
-// /**
-//  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//  */
-// var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
-// permutations = getPermutations(chosenWordArr); 
+
+var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
+console.log(chosenWordArr);
+permutations = getPermutations(chosenWordArr); 
+console.log(permutations);
 // // check validity against large dictionary
 // // should be ordered in length and then alphabetically
 
@@ -144,7 +150,7 @@ function scramble(someString){ // messy code to scramble a word
 //     /**
 //      * after each successful guess, update the guessedUnguessed array
 //      * clear console
-//      * print to console
+//      * print to console -- console.log(scramble(chosenWord));
 //      */
 //   }
 // } while (guess != null); //  && permutations = guessedUnguessed
