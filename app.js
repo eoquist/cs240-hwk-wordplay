@@ -35,7 +35,7 @@ var guessedUnguessedOBJ = {
  */
 function trim(arr, arrOf6, dict){
   for(let i=0; i<arr.length-1; i++){
-    var map = new dictMap();
+    var map = Object.create(dictMap);
     if(arr[i].length == 6){
       arrOf6.push(arr[i]);
 
@@ -88,20 +88,22 @@ function getPermutations(string){
     if (string.indexOf(char) != i){ // Cause we don't want any duplicates:
       continue;
     }
-    var remainingString = string.slice(0, i) + string.slice(i + 1, string.length);
+    var slice1 = string.slice(0, i);
+    var slice2 = string.slice(i + 1, string.length);
+    var remainingString = slice1 + slice2;
 
     for (var subPermutation of getPermutations(remainingString)){
       var word = char + subPermutation;
-      
+
+      console.log(trimmedDict.filter(obj => obj.word === word));
       // if word is in trimmedDict[]
       if(trimmedDict.filter(obj => obj.word === word).length > 0){  // referenced arrow notation
-        console.log(word);
         permutations.push(char + subPermutation);
         //should be ordered in length and then alphabetically????
       }
     }
   }
-  // wordsTotal = permutations.length;
+  wordsTotal = permutations.length;
   return permutations;
   } 
 
@@ -126,19 +128,17 @@ function endGame(){
  * BEGIN MAIN CODE
  */
  trim(dictionary,rootWordOptions,dictMap);
- console.log(rootWordOptions);
- console.log(dictMap);
- 
  
  let rootWordOptionsSize = rootWordOptions.length;
  var num = Math.floor(Math.random()*rootWordOptionsSize);
  alert("A 6-letter word has been chosen for you");
  chosenWord = rootWordOptions[num]; // pull a random base word
- console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
  
  var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
  permutations = getPermutations(chosenWord); 
  var tmpScramble = scramble(chosenWord)
+
+ console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
  console.log("Your letters are: " + tmpScramble);
  
  //  blank '- - -' map of 
@@ -175,9 +175,10 @@ do{
 
     console.clear();
     console.log(tmpScramble);
-    guessUnguessed.forEach( function(o) {  // print each
-      console.log(e.state)
-    });
+    for( i = 0 ; i < guessUnguessed.length - 1 ; i++ ){
+      console.log(guessUnguessed[i]);
+      console.log("print here");
+    }
     printPermutations();
   }
   else if((guess != null) && !(trimmedDict.filter(obj => obj.word === guess).length > 0)){
