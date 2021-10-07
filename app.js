@@ -17,11 +17,6 @@ wordsGuessed = 0,
 wordsTotal = 1
 guessUnguessed = [];
 
-var dictMap = {
-  word: '',
-  count: 0
-}
-
 var guessedUnguessedOBJ = {
   word: '',
   unguessed: '',
@@ -33,20 +28,14 @@ var guessedUnguessedOBJ = {
  * @param {*} arrOf6 array strings of length 6
  * @param {*} dict array of map of strings of length between 3 and 6 (inclusive) with values indicating length
  */
-function trim(arr, arrOf6, dict){
+function trim(arr, arrOf6, otherArr){
   for(let i=0; i<arr.length-1; i++){
-    var map = Object.create(dictMap);
     if(arr[i].length == 6){
       arrOf6.push(arr[i]);
-
-      map.word = arr[i];
-      map.count = arr[i].length;
-      trimmedDict.push(map);
+      otherArr.push(arr[i]);
     }
     else if (arr[i].length < 6 && arr[i].length >= 3 ){
-      map.word = arr[i];
-      map.count = arr[i].length;
-      trimmedDict.push(map);
+      otherArr.push(arr[i]);
     }
   }
 }
@@ -75,35 +64,31 @@ function swap(someString, num1, num2){
   return word;
 }
 
+var tempPermu = [];
 /**
  * Taken from stackoverflow users Nikhil Mahirrao, Chang, and others.
  * https://stackoverflow.com/questions/39927452/recursively-print-all-permutations-of-a-string-javascript
  * @param {*} string takes a string to permute
  */
   function getPermutations(string) {
-    var tempPermu = [];
-
-    if (string.length === 1) 
-    {
-      tempPermu.push(string);
-      return tempPermu;
-    }
-
-    for (var i = 0; i < string.length; i++) 
-    {
-      var firstChar = string[i];
-      var otherChar = string.substring(0, i) + string.substring(i + 1);
-      var otherPermutations = getPermutations(otherChar);
-      
-      for (var j = 0; j < otherPermutations.length; j++) {
-        tempPermu.push(firstChar + otherPermutations[j]);
+      if(string.length >= 3 && trimmedDict.includes(string)){
+        tempPermu.push(string);
       }
+  
+      for (var i = 0; i < string.length; i++) 
+      {
+        var firstChar = string[i];
+        var otherChar = string.substring(0, i) + string.substring(i + 1);
+        var otherPermutations = getPermutations(otherChar);
+        
+        for (var j = 0; j < otherPermutations.length; j++) {
+          if(trimmedDict.includes(string)){
+            console.log(string);
+            tempPermu.push(firstChar + otherPermutations[j]);
+          }
+        }
     }
-    return tempPermu;
-  }
-
-function printPermutations(){
-  permutations.forEach((e) => {console.log(e)} );
+  return tempPermu;
 }
 
 function endGame(){
@@ -122,17 +107,16 @@ function endGame(){
 /**
  * BEGIN MAIN CODE
  */
- trim(dictionary,rootWordOptions,dictMap);
+ trim(dictionary,rootWordOptions,trimmedDict);
  
  let rootWordOptionsSize = rootWordOptions.length;
  var num = Math.floor(Math.random()*rootWordOptionsSize);
  alert("A 6-letter word has been chosen for you");
  chosenWord = rootWordOptions[num]; // pull a random base word
- console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
  
  var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
  permutations = getPermutations(chosenWord); 
- console.log(permutations.length); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ 
  var tmpScramble = scramble(chosenWord)
 
  console.log("Your letters are: " + tmpScramble);
@@ -160,7 +144,7 @@ do{
   else if((guess != null) && (guessUnguessed.filter(obj => obj.word === guess).length > 0)){
     alert(guess + " has already been found");
   }
-  else if(guess != null && (trimmedDict.filter(obj => obj.word === guess).length > 0)){
+  else if(guess != null && (trimmedDict.includes(guess))){
     alert('Congratulations! You guessed "' + guess + '" correctly!');
     wordsGuessed++;
     guessUnguessed.forEach( function(o) {  // after each successful guess, update the guessedUnguessed array
@@ -177,7 +161,7 @@ do{
     }
     printPermutations();
   }
-  else if((guess != null) && !(trimmedDict.filter(obj => obj.word === guess).length > 0)){
+  else if((guess != null) && !(trimmedDict.includes(guess))){
     alert(guess + " is not in the dictionary provided");
   }
   else if(guess === null){
