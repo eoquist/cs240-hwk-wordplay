@@ -7,114 +7,123 @@ have fun with css??
 */
 
 var 
-wordLength = 6,
-rootWordOptions = [],
+MIN_WORDLENGTH = 3,
+MAX_WORDLENGTH = 6,
 dictMap = {},
+rootWordOptions = [],
 chosenWord, 
 permutations = [],
-guessedUnguessed = [];
-
-
-/**
- * BEGIN MAIN CODE
- */
-trim(test);
-console.log(rootWordOptions);
-console.log(dictMap);
-
-
-let rootWordOptionsSize = rootWordOptions.length;
-var num = Math.floor(Math.random()*rootWordOptionsSize);
-alert("A 6-letter word has been chosen for you");
-chosenWord = rootWordOptions[num]; // pull a random base word
-/**
- * END MAIN CODE
- */
-
+wordsGuessed = 0,
+wordsTotal = 0,
+guessedUnguessed = {};
 
 /**
- * HashMap K(word) V(# letter?)
- * @param {*} arr 
+ * @param {*} arr given an array of strings (dictionary)
+ * @param {*} arrOf6 array strings of length 6
+ * @param {*} otherArr object map of strings of length between 3 and 6 (inclusive) with values indicating length
  */
-function trim(arr){
+function trim(arr, arrOf6, otherArr){
   for(let i= arr.length-1; i>=0; i--){
     if(arr[i].length == 6){
-      rootWordOptions.push(arr[i]);
-      dictMap[arr[i]] = arr[i].length;
+      arrOf6.push(arr[i]);
+      otherArr[arr[i]] = arr[i].length;
     }
-    else if (arr[i].length < 6){
-      dictMap[arr[i]] = arr[i].length;
+    else if (arr[i].length < 6 && arr[i].length >= 3 ){
+      otherArr[arr[i]] = arr[i].length;
     }
   }
 }
 
 function scramble(someString){ // messy code to scramble a word
   var wordToScramble = someString;
-  for(let i = 0; i < wordLength; i++){
+  for(let i = 0; i < MAX_WORDLENGTH; i++){
     var ran1 = Math.floor(Math.random()*(someString.length-1));
     var ran2 = Math.floor(Math.random()*(someString.length-1));
 
-    var char1 = wordToScramble.charAt(ran1);
-    var char2 = wordToScramble.charAt(ran2);
-    var indexChar2 = wordToScramble.indexOf(char2);
-
-    wordToScramble = wordToScramble.replace(char1,char2);
-    wordToScramble = wordToScramble.replace(wordToScramble.charAt(indexChar2),char1);
+    wordToScramble = swap(wordToScramble,ran1,ran2);
   }
   return wordToScramble;
+}
+
+function swap(someString, num1, num2){
+  var word = someString;
+
+  var char1 = word.charAt(num1);
+  var char2 = word.charAt(num2);
+  var indexChar2 = word.indexOf(char2);
+
+  word = word.replace(char1,char2);
+  word = word.replace(word.charAt(indexChar2),char1);
+
+  return word;
 }
 
 // /**
 //  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 //  * array equivalency function??
+//  * FIX GETPERMUTATIONS
 //  */
 
 /**
- * Heap's Algorithm in JavaScript
- * followed youTube video by Justin Kim
- * fills an array with all permutations
- * @param {*} arr array of single items to use in finding all permutations of those items
+ * Taken from stackoverflow users Syntac, Eugen Sunic, and others.
+ * https://stackoverflow.com/questions/39927452/recursively-print-all-permutations-of-a-string-javascript
+ * @param {*} string takes a string to permute
  */
-const getPermutations = arr => {
+function getPermutations(string){ 
+  for (var i = MIN_WORDLENGTH; i < string.length; i++) {
+    var char = string[i];
 
-  const swap = (arrToSwap, indexA, indexB) => {
-    const tmp = arrToSwap[indexA];
-    arrToSwap[indexA] = arrToSwap[indexB];
-    arrToSwap[indexB] = tmp;
-  }
-
-  const generate = (n, heapArr) => {
-    if (n==1){
-      permutations.push(heapArr.slice());
-      return;
+    // Cause we don't want any duplicates:
+    if (string.indexOf(char) != i){
+      continue;
     }
+    var remainingString = string.slice(0, i) + string.slice(i + 1, string.length);
 
-    generate (n - 1, heapArr);
-
-    for (let i = 0; i < n - 1; i++){
-      if (n % 2 == 0) {
-        swap(heapArr, i, n-1);
-      } else {
-        swap(heapArr, 0, n-1);
+    for (var subPermutation of getPermutations(remainingString)){
+      var word = char + subPermutation;
+      if(word in dictMap){
+        console.log(word);
+        permutations.push(char + subPermutation);
       }
-
-      generate (n - 1, heapArr);
     }
   }
-
-  generate(chosenWord.length, chosenWord.slice());
   return permutations;
-}
+  } 
 
 
-var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
-console.log(chosenWordArr);
-permutations = getPermutations(chosenWordArr); 
-console.log(permutations);
 // // check validity against large dictionary
 // // should be ordered in length and then alphabetically
 
-// console.log(scramble(chosenWord));
+function printPermutations(){
+  permutations.forEach((e) => {console.log(e)} );
+}
+
+// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+function endGame(){
+  console.log("Thank you for playing!");
+  console.log(chosenWord);
+  printPermutations();
+}
+
+
+/**
+ * BEGIN MAIN CODE
+ */
+ trim(dictionary,rootWordOptions,dictMap);
+ console.log(rootWordOptions);
+ console.log(dictMap);
+ 
+ 
+ let rootWordOptionsSize = rootWordOptions.length;
+ var num = Math.floor(Math.random()*rootWordOptionsSize);
+ alert("A 6-letter word has been chosen for you");
+ chosenWord = rootWordOptions[num]; // pull a random base word
+ console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+  var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
+  permutations = getPermutations(chosenWord); 
+var tmpScramble = scramble(chosenWord)
+console.log("Your letters are: " + tmpScramble);
 
 // //  blank --- version of permutations list --> put in guessedUnguessed[]
 // for(let i=0; i<permutations.length; i++){
@@ -123,36 +132,35 @@ console.log(permutations);
 //  */
 // }
 
-// guessedUnguessed.forEach( function(x) {console.log(x)} );
-
 // // PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
-// do{
-//   var guess = prompt("What is one word you can make from the scrambled letters?");
+do{
+  var guess = prompt("What is one word you can make from the scrambled letters?");
 
-//   if(guess = null){
-//     alert("Thank you for playing!");
-//   }
-//   else if((guess != null) && (guess = '*')){ // asterisk (*) scrambles chosen word
-//     chosenWord = scramble(chosenWord);
-//   }
-//   else if((guess != null) && !(guess in dictMap)){
-//     alert(""); // too short/long
-//   }
-//   else if((guess != null) && (guess = x )){
-//     alert(""); // word is not a valid English word
-//   }
-//   else if((guess != null) && (guess = x )){
-//     alert(""); // word has already been found
-//   }
-//   else {
-//     alert('Congratulations! You guessed "' + guess + '" correctly!');
-//     /**
-//      * after each successful guess, update the guessedUnguessed array
-//      * clear console
-//      * print to console -- console.log(scramble(chosenWord));
-//      */
-//   }
-// } while (guess != null); //  && permutations = guessedUnguessed
+  if((guess != null) && (guess = '*')){ // asterisk (*) scrambles chosen word
+    chosenWord = scramble(chosenWord);
+    endGame();
+  }
+  else if((guess != null) && (guess.length < 3 || guess.length > 6)){
+    alert(guess + " is either too short or too long!");
+  }
+  else if((guess != null) && (guess in guessedUnguessed)){
+    alert(guess + " has already been found");
+  }
+  else if(guess != null && (guess in dictMap)){
+    alert('Congratulations! You guessed "' + guess + '" correctly!');
+    // after each successful guess, update the guessedUnguessed array
+    console.clear();
+    console.log(tmpScramble);
+    printPermutations();
+  }
+  else if((guess != null) && !(guess in dictMap)){
+    alert(guess + " is not in the dictionary provided");
+  }
+  else {
+    endGame();
+    break;
+  }
+} while (guess != null); //  && permutations = guessedUnguessed
 
 // /**
 //  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -161,7 +169,9 @@ console.log(permutations);
 //  */
 
 
-// /**
-//  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//  * end game stats printed here
-//  */
+//end game stats displayed here:
+console.log("You correctly guessed " + wordsGuessed + " of " + wordsTotal + " words.");
+// iterate through guessedUnguessed and print line by line
+ /**
+  * END MAIN CODE
+  */
