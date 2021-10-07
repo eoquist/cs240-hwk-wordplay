@@ -157,11 +157,8 @@ do {
     printPermutations();
   } else if ((guess != null) && !(trimmedDict.includes(guess))) {
     alert(guess + " is not in the dictionary provided");
-  } else if (guess === null) {
-    endGame();
-    break;
   }
-} while (wordsGuessed < wordsTotal);
+} while (wordsGuessed < wordsTotal || guess === null);
 /**
  * END MAIN CODE
  */
