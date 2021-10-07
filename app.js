@@ -76,36 +76,31 @@ function swap(someString, num1, num2){
 }
 
 /**
- * Taken from stackoverflow users Syntac, Eugen Sunic, and others.
+ * Taken from stackoverflow users Nikhil Mahirrao, Chang, and others.
  * https://stackoverflow.com/questions/39927452/recursively-print-all-permutations-of-a-string-javascript
  * @param {*} string takes a string to permute
  */
-function getPermutations(string){ 
-  // IN DESPERATE NEED OF FIXING
-  for (var i = 0; i <= string.length; i++) {
-    var char = string[i];
+  function getPermutations(string) {
+    var tempPermu = [];
 
-    if (string.indexOf(char) != i){ // Cause we don't want any duplicates:
-      continue;
+    if (string.length === 1) 
+    {
+      tempPermu.push(string);
+      return tempPermu;
     }
-    var slice1 = string.slice(0, i);
-    var slice2 = string.slice(i + 1, string.length);
-    var remainingString = slice1 + slice2;
 
-    for (var subPermutation of getPermutations(remainingString)){
-      var word = char + subPermutation;
-
-      console.log(trimmedDict.filter(obj => obj.word === word));
-      // if word is in trimmedDict[]
-      if(trimmedDict.filter(obj => obj.word === word).length > 0){  // referenced arrow notation
-        permutations.push(char + subPermutation);
-        //should be ordered in length and then alphabetically????
+    for (var i = 0; i < string.length; i++) 
+    {
+      var firstChar = string[i];
+      var otherChar = string.substring(0, i) + string.substring(i + 1);
+      var otherPermutations = getPermutations(otherChar);
+      
+      for (var j = 0; j < otherPermutations.length; j++) {
+        tempPermu.push(firstChar + otherPermutations[j]);
       }
     }
+    return tempPermu;
   }
-  wordsTotal = permutations.length;
-  return permutations;
-  } 
 
 function printPermutations(){
   permutations.forEach((e) => {console.log(e)} );
@@ -133,12 +128,13 @@ function endGame(){
  var num = Math.floor(Math.random()*rootWordOptionsSize);
  alert("A 6-letter word has been chosen for you");
  chosenWord = rootWordOptions[num]; // pull a random base word
+ console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
  
  var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
  permutations = getPermutations(chosenWord); 
+ console.log(permutations.length); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
  var tmpScramble = scramble(chosenWord)
 
- console.log(chosenWord); // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
  console.log("Your letters are: " + tmpScramble);
  
  //  blank '- - -' map of 
