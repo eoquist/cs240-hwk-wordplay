@@ -130,18 +130,30 @@ guessedUnguessed.forEach( function(x) {console.log(x)} );
 // PROMPT allow the player to guess (in a loop) - closes upon cancel/null input or game win
 do{
   var guess = prompt("What is one word you can make from the scrambled letters?");
-  // asterisk (*) scrambles chosen word
 
-  /**
-  * Alert to the user: word is not a valid English word (or too short/long)
-  * Alert to the user: word has already been found
-  * Alert to the user: Correct!
-  * 
-  * after each successful guess, update the guessedUnguessed array
-  * clear console
-  * print to console
-  */
-
+  if(guess = null){
+    alert("Thank you for playing!");
+  }
+  else if((guess != null) && (guess = '*')){ // asterisk (*) scrambles chosen word
+    chosenWord = scramble(chosenWord);
+  }
+  else if((guess != null) && !(trimmedDict.includes(guess))){
+    alert(""); // too short/long
+  }
+  else if((guess != null) && (guess = x )){
+    alert(""); // word is not a valid English word
+  }
+  else if((guess != null) && (guess = x )){
+    alert(""); // word has already been found
+  }
+  else {
+    alert('Congratulations! You guessed "' + guess + '" correctly!');
+    /**
+     * after each successful guess, update the guessedUnguessed array
+     * clear console
+     * print to console
+     */
+  }
 } while (guess != null && permutations = guessedUnguessed);
 /**
  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
