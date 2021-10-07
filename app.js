@@ -21,10 +21,9 @@ console.log(trimmedDict);
 
 let rootWordOptionsSize = rootWordOptions.length;
 var num = Math.floor(Math.random()*rootWordOptionsSize);
-console.log(num);
 alert("A 6-letter word has been chosen for you");
 chosenWord = rootWordOptions[num]; // pull a random base word
-console.log(chosenWord);
+console.log(scramble(chosenWord));
 
 
 /**
@@ -43,19 +42,25 @@ function trim(arr){
   }
 }
 
-function scramble(someString){
-  const wordToScramble = someString;
+function scramble(someString){ // messy code to scramble a word
+  var wordToScramble = someString;
   for(let i = 0; i < wordLength; i++){
-    const ran = Math.floor(Math.random()*(someString.length-1));
-    const tmp = wordToScramble[ran];
+    var ran1 = Math.floor(Math.random()*(someString.length-1));
+    var ran2 = Math.floor(Math.random()*(someString.length-1));
 
+    var char1 = wordToScramble.charAt(ran1);
+    var char2 = wordToScramble.charAt(ran2);
+    var indexChar2 = wordToScramble.indexOf(char2);
+
+    wordToScramble = wordToScramble.replace(char1,char2);
+    wordToScramble = wordToScramble.replace(wordToScramble.charAt(indexChar2),char1);
   }
   return wordToScramble;
 }
 
 // /**
 //  * AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-//  * array equivalency function
+//  * array equivalency function??
 //  */
 
 // /**
