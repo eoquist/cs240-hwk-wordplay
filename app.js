@@ -14,19 +14,14 @@ var
   chosenWord,
   permutations = [],
   wordsGuessed = 0,
-  wordsTotal = 1
-guessUnguessed = [];
+  wordsTotal = 0,
+  guessUnguessed = [];
 
-var guessedUnguessedOBJ = {
-  word: '',
-  unguessed: '',
-  state: ''
-}
 
 /**
  * @param {*} arr given an array of strings (dictionary)
  * @param {*} arrOf6 array strings of length 6
- * @param {*} dict array of map of strings of length between 3 and 6 (inclusive) with values indicating length
+ * @param {*} otherArr array of map of strings of length between 3 and 6 (inclusive) with values indicating length
  */
 function trim(arr, arrOf6, otherArr) {
   for (let i = 0; i < arr.length - 1; i++) {
@@ -39,6 +34,10 @@ function trim(arr, arrOf6, otherArr) {
   }
 }
 
+/**
+ * @param {*} someString someString to scramble
+ * @returns Returns a scrambled string
+ */
 function scramble(someString) { // messy code to scramble a word
   var wordToScramble = someString;
   for (let i = 0; i < MAX_WORDLENGTH; i++) {
@@ -50,6 +49,12 @@ function scramble(someString) { // messy code to scramble a word
   return wordToScramble;
 }
 
+/**
+ * @param {*} someString the whole string
+ * @param {*} num1 first index to swap in someString
+ * @param {*} num2 second index to swap in someString
+ * @returns Returns a string with some letters swapped
+ */
 function swap(someString, num1, num2) {
   var word = someString;
 
@@ -63,41 +68,52 @@ function swap(someString, num1, num2) {
   return word;
 }
 
-// 
-var tempPermu = [];
 /**
  * Taken from stackoverflow users Nikhil Mahirrao, Chang, and others.
  * https://stackoverflow.com/questions/39927452/recursively-print-all-permutations-of-a-string-javascript
  * @param {*} string takes a string to permute
+ * @returns Returns an array of string permutations without duplicates, ordered from smallest to largest string
  */
 function getPermutations(string) {
-  if (string.length >= 3 && trimmedDict.includes(string)) {
-    tempPermu.push(string);
+  if (string.length <= 2) { // base case?
   }
 
-  for (var i = 0; i < string.length; i++) {
+  for (var i = 0; i < string.length; i++) { // recursive
     var firstChar = string[i];
     var otherChar = string.substring(0, i) + string.substring(i + 1);
-    var otherPermutations = getPermutations(otherChar);
-
-    for (var j = 0; j < otherPermutations.length; j++) {
-      if (trimmedDict.includes(string)) {
-        console.log(string);
-        tempPermu.push(firstChar + otherPermutations[j]);
-      }
+    
+    if(otherChar.length >= 3 && (trimmedDict.includes(otherChar)) && (!(permutations.includes(otherChar))) ){
+      permutations.push(otherChar);
+      console.log(otherChar);
     }
+
+    permutations = Array.from(new Set(permutations.concat(getPermutations(otherChar))))
+    permutations.sort( (a,b) => a.length - b.length ); // smallest to largest
   }
-  return tempPermu;
+  return permutations;
 }
 
+/**
+ * @param {*} arr arr is an array to be printed vertically
+ */
+function printArr(arr){
+  for(i = 0; i < arr.length - 1; i++){
+    console.log(arr[i]);
+  }
+}
+
+/**
+ * This prints to the console the basic game stats after a game has been quit or completed
+ */
 function endGame() {
+  console.clear();
   console.log("Thank you for playing!");
   console.log("You correctly guessed " + wordsGuessed + " of " + wordsTotal + " words.");
   if (wordsGuessed == wordsTotal) {
     console.log("Congratulations on guessing all possible word combinations!");
   } else {
     console.log("These were all the possible words:");
-    printPermutations();
+    printArr(permutations);
   }
 }
 
@@ -107,29 +123,29 @@ function endGame() {
  */
 trim(dictionary, rootWordOptions, trimmedDict);
 
+// pull a random base word
 let rootWordOptionsSize = rootWordOptions.length;
 var num = Math.floor(Math.random() * rootWordOptionsSize);
 alert("A 6-letter word has been chosen for you");
-chosenWord = rootWordOptions[num]; // pull a random base word
+chosenWord = rootWordOptions[num]; 
 
-var chosenWordArr = chosenWord.split(""); // makes sure it will be treated as an array
+// handle permutations
+var chosenWordArr = chosenWord.split("");
+permutations.push(chosenWord);
 permutations = getPermutations(chosenWord);
+wordsTotal = permutations.length;
 
-var tmpScramble = scramble(chosenWord)
-
-console.log("Your letters are: " + tmpScramble);
-
-//  blank '- - -' map of 
+// guessedUnguessed instantiated
 for (i = 0; i < permutations.length - 1; i++) {
-  var obj = new guessedUnguessedOBJ();
-  var str = ("- ").repeat(permutations[i].length);
-
-  obj.word = permutations[i];
-  obj.unguessed = str;
-  obj.state = str;
-  guessUnguessed.push(obj);
+  guessUnguessed.push('- '.repeat(permutations[i].length)); // save fill-in-the-blanks for each permutation
 }
 
+// game screen print
+var tmpScramble = scramble(chosenWord)
+console.log("Your letters are: " + tmpScramble);
+printArr(guessUnguessed);
+
+// game loop
 do {
   var guess = prompt("What is one word you can make from the scrambled letters?");
 
@@ -137,28 +153,23 @@ do {
     console.log(scramble(chosenWord));
   } else if ((guess != null) && (guess.length < 3 || guess.length > 6)) {
     alert(guess + " is either too short or too long!");
-  } else if ((guess != null) && (guessUnguessed.filter(obj => obj.word === guess).length > 0)) {
+  } else if ((guess != null) && (guessUnguessed.includes(guess)) ){
     alert(guess + " has already been found");
   } else if (guess != null && (trimmedDict.includes(guess))) {
     alert('Congratulations! You guessed "' + guess + '" correctly!');
     wordsGuessed++;
-    guessUnguessed.forEach(function(o) { // after each successful guess, update the guessedUnguessed array
-      if (o.word === guess) {
-        e.state = e.word
-      }
-    });
-
+    var tmpIndex = permutations.indexOf(guess);
+    guessUnguessed[tmpIndex] = permutations[tmpIndex]; // update guessed status
     console.clear();
     console.log(tmpScramble);
-    for (i = 0; i < guessUnguessed.length - 1; i++) {
-      console.log(guessUnguessed[i]);
-      console.log("print here");
-    }
-    printPermutations();
+    printArr(guessUnguessed);
   } else if ((guess != null) && !(trimmedDict.includes(guess))) {
     alert(guess + " is not in the dictionary provided");
+  } else {
+    endGame();
+    break;
   }
-} while (wordsGuessed < wordsTotal || guess === null);
+} while (wordsGuessed < wordsTotal);
 /**
  * END MAIN CODE
  */
