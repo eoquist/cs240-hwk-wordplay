@@ -84,7 +84,6 @@ function getPermutations(string) {
     
     if(otherChar.length >= 3 && (trimmedDict.includes(otherChar)) && (!(permutations.includes(otherChar))) ){
       permutations.push(otherChar);
-      console.log(otherChar);
     }
 
     permutations = Array.from(new Set(permutations.concat(getPermutations(otherChar))))
@@ -97,7 +96,7 @@ function getPermutations(string) {
  * @param {*} arr arr is an array to be printed vertically
  */
 function printArr(arr){
-  for(i = 0; i < arr.length - 1; i++){
+  for(i = 0; i < arr.length; i++){
     console.log(arr[i]);
   }
 }
@@ -150,7 +149,7 @@ do {
   var guess = prompt("What is one word you can make from the scrambled letters?");
 
   if ((guess != null) && (guess == '*')) { // asterisk (*) scrambles chosen word
-    console.log(scramble(chosenWord));
+    tmpScramble = scramble(chosenWord);
   } else if ((guess != null) && (guess.length < 3 || guess.length > 6)) {
     alert(guess + " is either too short or too long!");
   } else if ((guess != null) && (guessUnguessed.includes(guess)) ){
@@ -160,8 +159,9 @@ do {
     wordsGuessed++;
     var tmpIndex = permutations.indexOf(guess);
     guessUnguessed[tmpIndex] = permutations[tmpIndex]; // update guessed status
+    // clear and print
     console.clear();
-    console.log(tmpScramble);
+    console.log("Letters to unscramble: " + tmpScramble);
     printArr(guessUnguessed);
   } else if ((guess != null) && !(trimmedDict.includes(guess))) {
     alert(guess + " is not in the dictionary provided");
