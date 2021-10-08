@@ -5,10 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS 240 Word'play'</title>
+
+    <style>
+        body {background-color: black;}
+        h1   {color: white;}
+        p    {color: white;}
+        </style>
 </head>
 <body>
     <script src="words_alpha.js"></script>
     <!-- <script src="testdic.js"></script>  -->
     <script src="app.js"></script>
+
+    <h1>How to Play:</h1>
+    <p>
+        <ul>
+            <li>
+                You will be given a mystery 6-letter word. Your goal is to guess the word and all of its permutations.
+                The mystery word will be scrambled and output to the console. 
+            </li><br> 
+            <li>
+                The total amount of words that you have to guess will be represented by dashes showing the total 
+                number of letters.
+            </li><br>
+            <li>
+                Your guesses should be 3 to 6 characters long.
+            </li><br>
+            <li>
+                If you input  *  as a guess, the mystery word's letter will be scrambled once again. 
+            </li><br>
+            <li>
+                The game ends when all words are guessed or you press cancel instead of inputting a guess.
+            </li><br>
+        </ul>
+    </p>
 </body>
 </html>
